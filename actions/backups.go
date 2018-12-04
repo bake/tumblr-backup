@@ -2,8 +2,11 @@ package actions
 
 import (
 	"archive/zip"
+	"encoding/base64"
 	"encoding/json"
-	"io"
+	"fmt"
+	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/url"
 	"path"
@@ -72,7 +75,7 @@ func (v BackupsResource) Create(c buffalo.Context) error {
 	return nil
 }
 
-func (v BackupsResource) writePost(w /*http.ResponseWriter*/ *zip.Writer, b *gotumblr.BasePost, raw json.RawMessage) error {
+func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json.RawMessage) error {
 	var p interface{} = &gotumblr.BasePost{}
 	switch b.PostType {
 	case "photo":
@@ -83,39 +86,50 @@ func (v BackupsResource) writePost(w /*http.ResponseWriter*/ *zip.Writer, b *got
 	if err := json.Unmarshal(raw, p); err != nil {
 		return errors.Wrapf(err, "could not unmarshal %s post", b.PostType)
 	}
+	data := render.Data{"post": p, "response": string(raw)}
 	switch b.PostType {
 	case "photo":
 		p := p.(*gotumblr.PhotoPost)
+		var photos []string
 		for _, photo := range p.Photos {
-			if err := v.writePhoto(w, photo.OriginalSize.URL); err != nil {
-				return errors.Wrapf(err, "could not write photo post %v", b.ID)
+			url := photo.OriginalSize.URL
+			res, err := http.Get(url)
+			if err != nil {
+				return errors.Wrap(err, "could not get photo")
 			}
+			defer res.Body.Close()
+			body, err := ioutil.ReadAll(res.Body)
+			if err != nil {
+				return errors.Wrap(err, "could not read photo")
+			}
+			photos = append(photos, fmt.Sprintf(
+				"data:%s;base64,%s",
+				mime.TypeByExtension(path.Ext(url)),
+				base64.StdEncoding.EncodeToString(body),
+			))
 		}
+		data["photos"] = photos
 	}
 	f, err := w.Create(b.ID.String() + ".html")
 	if err != nil {
 		return errors.Wrapf(err, "could not create post html for %v", b.ID)
 	}
 	renderer := r.Plain("export/"+b.PostType+".html", "export.html")
-	data := render.Data{"post": p, "response": string(raw)}
 	if err := renderer.Render(f, data); err != nil {
 		return errors.Wrapf(err, "could not render html for %v", b.ID)
 	}
 	return nil
 }
 
-func (v BackupsResource) writePhoto(w *zip.Writer, url string) error {
-	f, err := w.Create(path.Join("photos", path.Base(url)))
-	if err != nil {
-		return errors.Wrap(err, "could not create photo in zip")
-	}
+func (v BackupsResource) encodePhoto(url string) (string, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		return errors.Wrap(err, "could not get photo")
+		return "", errors.Wrap(err, "could not get photo")
 	}
 	defer res.Body.Close()
-	if _, err := io.Copy(f, res.Body); err != nil {
-		return errors.Wrap(err, "could not copy photo")
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return "", errors.Wrap(err, "could not read photo")
 	}
-	return nil
+	return base64.StdEncoding.EncodeToString(body), nil
 }
