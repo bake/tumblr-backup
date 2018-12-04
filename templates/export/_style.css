@@ -24,6 +24,7 @@ body {
 	margin: auto;
 	background: #fff;
 	border-radius: 3px;
+	overflow: hidden;
 }
 
 .post > * {
