@@ -28,41 +28,50 @@ type BackupsResource struct {
 // Create adds a Backup to the DB. This function is mapped to the
 // path POST /blogs/{blog_id}/backups
 func (v BackupsResource) Create(c buffalo.Context) error {
-	// TODO: Check if blog_id is owned by u
-	// u, ok := c.Value("user").(gotumblr.UserInfo)
-	// if !ok {
-	// 	return errors.New("user not found")
-	// }
+	u, ok := c.Value("user").(gotumblr.UserInfo)
+	if !ok {
+		return errors.New("user not found")
+	}
+	var ownBlog bool
+	for _, b := range u.Blogs {
+		if b.Name == c.Param("blog_id") {
+			ownBlog = true
+			break
+		}
+	}
+	if !ownBlog {
+		return errors.Errorf("blog %s does not belong to %s", c.Param("blog_id"), u.Name)
+	}
+
 	t, ok := c.Value("tumblr").(*gotumblr.Client)
 	if !ok {
 		return errors.New("tumblr client not found")
 	}
 
+	h := c.Response().Header()
+	h.Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s-%d.zip", c.Param("blog_id"), time.Now().Unix()))
+	h.Set("Content-Type", mime.TypeByExtension(".zip"))
+
 	w := zip.NewWriter(c.Response())
 	defer w.Close()
 
-	var total int
 	before := time.Now().Unix()
-	last := time.Now()
-	for total < 500 {
-		c.Logger().Printf("total=%d duration=%v\n", total, time.Now().Sub(last))
-		last = time.Now()
+	for {
 		res, err := t.Posts(c.Param("blog_id"), "", url.Values{
 			"before": []string{strconv.FormatInt(before, 10)},
 		})
 		if err != nil {
 			return errors.Wrap(err, "could not get posts")
 		}
-		total += len(res.Posts)
 		for _, raw := range res.Posts {
 			var p gotumblr.BasePost
 			if err := json.Unmarshal(raw, &p); err != nil {
 				return errors.Wrap(err, "could not unmarshal base post")
 			}
+			before = p.Timestamp
 			if err := v.writePost(w, &p, raw); err != nil {
 				return errors.Wrap(err, "could not write to zip")
 			}
-			before = p.Timestamp
 		}
 		if len(res.Posts) <= 1 {
 			break
