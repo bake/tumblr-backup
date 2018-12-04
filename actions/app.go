@@ -44,8 +44,8 @@ func App() *buffalo.App {
 
 		auth := app.Group("/auth")
 		auth.GET("/logout", LogoutHandler)
-		auth.GET("/login/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
-		auth.GET("/callback/{provider}", AuthHandler)
+		auth.GET("/{provider}/login", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+		auth.GET("/{provider}/callback", AuthHandler)
 		app.Resource("/blogs", BlogsResource{})
 		app.Resource("/blogs/{blog_id}/backups", BackupsResource{})
 		app.ServeFiles("/", assetsBox)
