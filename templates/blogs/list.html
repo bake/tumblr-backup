@@ -1,5 +1,14 @@
-<ul>
+<div class="row">
 	<%= for (blog) in blogs { %>
-		<li><a href="/blogs/<%= blog.Name %>"><%= blog.Name %></a></li>
+		<div class="col-sm-3 col-6 mt-2">
+			<div class="card">
+				<a href="/blogs/<%= blog.Name %>">
+					<img class="card-img-top" src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/128" alt="<%= blog.Name %> Avatar">
+				</a>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item"><%= blog.Name %></li>
+				</ul>
+			</div>
+		</div>
 	<% } %>
-</ul>
+</div>
