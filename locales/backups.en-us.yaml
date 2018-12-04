@@ -1,0 +1,6 @@
+- id: "backup.created.success"
+  translation: "Backup was successfully created."
+- id: "backup.updated.success"
+  translation: "Backup was successfully updated."
+- id: "backup.destroyed.success"
+  translation: "Backup was successfully destroyed."

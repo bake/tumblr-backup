@@ -3,20 +3,17 @@ package actions
 import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
+	csrf "github.com/gobuffalo/mw-csrf"
 	forcessl "github.com/gobuffalo/mw-forcessl"
 	paramlogger "github.com/gobuffalo/mw-paramlogger"
+	"github.com/markbates/goth/gothic"
 	"github.com/unrolled/secure"
-
-	csrf "github.com/gobuffalo/mw-csrf"
-	i18n "github.com/gobuffalo/mw-i18n"
-	"github.com/gobuffalo/packr"
 )
 
 // ENV is used to help switch settings based on where the
 // application is being run. Default is "development".
 var ENV = envy.Get("GO_ENV", "development")
 var app *buffalo.App
-var T *i18n.Translator
 
 // App is where all routes and middleware for buffalo
 // should be defined. This is the nerve center of your
@@ -38,37 +35,23 @@ func App() *buffalo.App {
 			SessionName: "_tumblrbackup_session",
 		})
 
-		// Automatically redirect to SSL
 		app.Use(forceSSL())
-
-		// Log request parameters (filters apply).
 		app.Use(paramlogger.ParameterLogger)
-
-		// Protect against CSRF attacks. https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)
-		// Remove to disable this.
 		app.Use(csrf.New)
-
-		// Setup and use translations:
-		app.Use(translations())
+		app.Use(SetCurrentUser)
 
 		app.GET("/", HomeHandler)
 
-		app.ServeFiles("/", assetsBox) // serve files from the public directory
+		auth := app.Group("/auth/{provider}")
+		auth.GET("/login", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+		auth.GET("/logout", LogoutHandler)
+		auth.GET("/callback", AuthHandler)
+		app.Resource("/blogs", BlogsResource{})
+		app.Resource("/blogs/{blog_id}/backups", BackupsResource{})
+		app.ServeFiles("/", assetsBox)
 	}
 
 	return app
-}
-
-// translations will load locale files, set up the translator `actions.T`,
-// and will return a middleware to use to load the correct locale for each
-// request.
-// for more information: https://gobuffalo.io/en/docs/localization
-func translations() buffalo.MiddlewareFunc {
-	var err error
-	if T, err = i18n.New(packr.NewBox("../locales"), "en-US"); err != nil {
-		app.Stop(err)
-	}
-	return T.Middleware()
 }
 
 // forceSSL will return a middleware that will redirect an incoming request

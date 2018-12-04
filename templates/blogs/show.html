@@ -1,0 +1,9 @@
+<h1><%= blog.Title %></h1>
+
+<h2 class="text-muted"><%= blog.Name %></h2>
+
+<p>Posts: <%= blog.Posts %></p>
+
+<%= form({action:"/blogs/"+blog.Name+"/backups", method: "POST"}) { %>
+	<button type="submit" class="btn btn-primary">Download last 500 Posts</button>
+<% } %>

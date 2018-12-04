@@ -1,0 +1,14 @@
+<div class="post text-photo">
+	<div class="text">
+		<%= raw(post.Body) %>
+		<%= raw(post.Reblog.TreeHTML) %>
+	</div>
+
+	<%= if (len(post.Tags) > 0) { %>
+		<ul class="tags">
+			<%= for (tag) in post.Tags { %>
+				<li class="tag"><%= tag %></li>
+			<% } %>
+		</ul>
+	<% } %>
+</div>

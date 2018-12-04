@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<title><%= ucfirst(post.PostType) %> Post</title>
+		<style type="text/css">
+			<%= partial("export/style.css") %>
+		</style>
+	</head>
+	<body>
+		<%= yield %>
+
+		<script>
+			var raw = <%= raw(response) %>;
+		</script>
+	</body>
+</html>
