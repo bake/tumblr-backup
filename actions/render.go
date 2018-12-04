@@ -2,7 +2,6 @@ package actions
 
 import (
 	"path"
-	"strings"
 
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr"
@@ -23,9 +22,6 @@ func init() {
 		// Add template helpers here:
 		Helpers: render.Helpers{
 			"base": path.Base,
-			"ucfirst": func(s string) string {
-				return strings.ToUpper(s[:1]) + s[1:]
-			},
 		},
 	})
 }
