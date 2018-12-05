@@ -9,10 +9,25 @@
 		</style>
 	</head>
 	<body>
-		<%= yield %>
+		<div class="post">
+			<%= yield %>
 
-		<script>
-			var raw = <%= raw(response) %>;
-		</script>
+			<%= if (len(post.Tags) > 0) { %>
+				<div class="tags">
+					<ul>
+						<%= for (tag) in post.Tags { %>
+							<li><%= tag %></li>
+						<% } %>
+					</ul>
+				</div>
+			<% } %>
+
+			<div class="meta">
+				<ul>
+					<li><strong><%= post.NoteCount %> Notes</strong></li>
+					<li><a href="<%= post.PostURL %>" target="_blank"><%= post.Date %></a></li>
+				</ul>
+			</div>
+		</div>
 	</body>
 </html>

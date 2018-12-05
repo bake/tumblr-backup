@@ -19,6 +19,11 @@ body {
 	font-style: normal;
 }
 
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
 .post {
 	max-width: 540px;
 	margin: auto;
@@ -28,14 +33,16 @@ body {
 }
 
 .post > * {
-	padding: 15px 10px;
+	margin: 15px;
 }
 
-.post .tags {
+.post .tags,
+.post .meta {
 	color: #8f8f8f;
 }
 
-.post .tags .tag {
+.post .tags ul li,
+.post .meta ul li {
 	display: inline;
 	list-style: none;
 	margin-right: 10px;
@@ -51,4 +58,15 @@ body {
 
 .post img {
 	width: 100%;
+}
+
+.post .question {
+	padding: 15px 20px;
+	border-radius: 3px;
+	background-color: #f2f2f2;
+}
+
+.post .question p:first-child {
+	color: #8f8f8f;
+	margin-bottom: 5px;
 }

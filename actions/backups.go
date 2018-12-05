@@ -13,10 +13,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gobuffalo/buffalo/render"
-
 	"github.com/BakeRolls/gotumblr"
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/buffalo/render"
 	"github.com/pkg/errors"
 )
 
@@ -87,6 +86,8 @@ func (v BackupsResource) Create(c buffalo.Context) error {
 func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json.RawMessage) error {
 	var p interface{} = &gotumblr.BasePost{}
 	switch b.PostType {
+	case "answer":
+		p = &gotumblr.AnswerPost{}
 	case "photo":
 		p = &gotumblr.PhotoPost{}
 	case "text":

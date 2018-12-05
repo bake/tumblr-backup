@@ -1,18 +1,10 @@
-<div class="post post-photo">
-	<div class="photo">
-		<%= for (photo) in photos { %>
-			<img src="<%= photo %>">
-		<% } %>
-	</div>
+<div class="photo">
+	<%= for (photo) in photos { %>
+		<img src="<%= photo %>">
+	<% } %>
+</div>
 
-	<div class="text">
-		<%= raw(post.Reblog.Comment) %>
-		<%= raw(post.Reblog.TreeHTML) %>
-	</div>
-
-	<ul class="tags">
-		<%= for (tag) in post.Tags { %>
-			<li class="tag"><%= tag %></li>
-		<% } %>
-	</ul>
+<div class="text">
+	<%= raw(post.Reblog.Comment) %>
+	<%= raw(post.Reblog.TreeHTML) %>
 </div>
