@@ -7,19 +7,17 @@
 		<%= for (i, blog) in blogs { %>
 			<div class="message">
 				<%= if (even(i)) { %>
-					<a href="/blogs/<%= blog.Name %>" class="avatar">
-						<img src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/64" alt="<%= blog.Name %> Avatar">
-					</a>
+					<img src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/64" alt="<%= blog.Name %> Avatar" class="avatar">
 					<div class="balloon from-left">
 						<p><%= blog.Title %></p>
+						<p><a href="/blogs/<%= blog.Name %>" class="btn is-primary">Open</a></p>
 					</div>
 				<% } else { %>
 					<div class="balloon from-right">
 						<p><%= blog.Title %></p>
+						<p><a href="/blogs/<%= blog.Name %>" class="btn is-primary">Open</a></p>
 					</div>
-					<a href="/blogs/<%= blog.Name %>" class="avatar">
-						<img src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/64" alt="<%= blog.Name %> Avatar">
-					</a>
+					<img src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/64" alt="<%= blog.Name %> Avatar" class="avatar">
 				<% } %>
 			</div>
 		<% } %>
