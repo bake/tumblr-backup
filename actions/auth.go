@@ -38,7 +38,7 @@ func AuthHandler(c buffalo.Context) error {
 	if err := c.Session().Save(); err != nil {
 		return errors.WithStack(err)
 	}
-	c.Flash().Add("success", "Logged in as "+user.Name)
+	c.Flash().Add("success", fmt.Sprintf("Welcome %s!", user.Name))
 	return c.Redirect(http.StatusTemporaryRedirect, "/blogs")
 }
 

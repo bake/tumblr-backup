@@ -1,11 +1,15 @@
-<h1><%= blog.Title %></h1>
+<section class="container with-title">
+	<h2 class="title"><%= blog.Title %></h2>
 
-<h2 class="text-muted"><%= blog.Name %></h2>
+	<div>
+		<%= form({action:"/blogs/"+blog.Name+"/backups", method: "POST"}) { %>
+			<p>
+				<button type="submit" class="btn btn-download is-primary">
+					Download all <%= blog.Posts %> posts.
+				</button>
+			</p>
+		<% } %>
 
-<%= form({action:"/blogs/"+blog.Name+"/backups", method: "POST"}) { %>
-	<button type="submit" class="btn btn-primary">
-		Download all <%= blog.Posts %> Posts
-	</button>
-
-	<p><small class="text-muted">This might take a while.</small></p>
-<% } %>
+		<p>This might take a while.</p>
+	</div>
+</section>

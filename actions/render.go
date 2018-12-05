@@ -22,6 +22,7 @@ func init() {
 		// Add template helpers here:
 		Helpers: render.Helpers{
 			"base": path.Base,
+			"even": func(i int) bool { return i%2 == 0 },
 		},
 	})
 }

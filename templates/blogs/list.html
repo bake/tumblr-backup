@@ -1,14 +1,27 @@
-<div class="row">
-	<%= for (blog) in blogs { %>
-		<div class="col-sm-3 col-6 mt-2">
-			<div class="card">
-				<a href="/blogs/<%= blog.Name %>">
-					<img class="card-img-top" src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/128" alt="<%= blog.Name %> Avatar">
-				</a>
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item"><%= blog.Name %></li>
-				</ul>
+<section class="container with-title">
+	<h2 class="title">Blogs</h2>
+
+	<div>
+		<p>Click on one of your avatars to start the download.</p>
+
+		<%= for (i, blog) in blogs { %>
+			<div class="message">
+				<%= if (even(i)) { %>
+					<a href="/blogs/<%= blog.Name %>" class="avatar">
+						<img src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/64" alt="<%= blog.Name %> Avatar">
+					</a>
+					<div class="balloon from-left">
+						<p><%= blog.Title %></p>
+					</div>
+				<% } else { %>
+					<div class="balloon from-right">
+						<p><%= blog.Title %></p>
+					</div>
+					<a href="/blogs/<%= blog.Name %>" class="avatar">
+						<img src="https://api.tumblr.com/v2/blog/<%= blog.Name %>/avatar/64" alt="<%= blog.Name %> Avatar">
+					</a>
+				<% } %>
 			</div>
-		</div>
-	<% } %>
-</div>
+		<% } %>
+	</div>
+</section>

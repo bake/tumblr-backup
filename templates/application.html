@@ -9,12 +9,25 @@
 		<meta name="csrf-token" content="<%= authenticity_token %>" />
 	</head>
 	<body>
-		<%= partial("navbar.html") %>
+		<header>
+			<h1>Tumblr Backup<i class="icon heart is-medium"></i></h1>
+			<p>Download all your posts on Tumblr.</p>
+		</header>
 
-		<div class="container">
-			<%= partial("flash.html") %>
-			<%= yield %>
-		</div>
+		<%= partial("flash.html") %>
+
+		<%= yield %>
+
+		<section class="container">
+			<div>
+				<%= if (!user) { %>
+					Please <a href="/auth/tumblr/login" class="btn is-primary">login</a> with your Tumblr account.
+				<% } else { %>
+					Go to your <a href="/blogs" class="btn">blogs</a>
+					or <a href="/auth/logout" class="btn is-error">logout</a>.
+				<% } %>
+			</div>
+		</section>
 
 		<%= javascriptTag("application.js") %>
 	</body>

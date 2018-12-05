@@ -1,2 +1,26 @@
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~font-awesome/css/font-awesome.css';
+// @import '~bootstrap/scss/bootstrap.scss';
+// @import '~font-awesome/css/font-awesome.css';
+@import '~nes.css/scss/nes.scss';
+
+body {
+	padding: 0 2rem;
+	margin: 2rem;
+	max-width: 768px;
+	margin: auto;
+}
+
+.message {
+	display: flex;
+
+	.avatar {
+		align-self: flex-end;
+	}
+
+	.balloon {
+		margin: 2rem;
+
+		&.from-right {
+			margin-left: auto;
+		}
+	}
+}
