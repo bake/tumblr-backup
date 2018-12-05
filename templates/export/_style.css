@@ -48,7 +48,7 @@ a {
 	margin-right: 10px;
 }
 
-.post .tags .tag::before {
+.post .tags ul li::before {
 	content: '#';
 }
 
