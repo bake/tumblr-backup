@@ -8,6 +8,10 @@ body {
 	max-width: 768px;
 }
 
+.container:not(:last-child) {
+	margin-bottom: 1rem;
+}
+
 .message {
 	display: flex;
 
