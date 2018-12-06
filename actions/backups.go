@@ -2,10 +2,9 @@ package actions
 
 import (
 	"archive/zip"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"mime"
 	"net/http"
 	"net/url"
@@ -100,25 +99,9 @@ func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json
 	switch b.PostType {
 	case "photo":
 		p := p.(*gotumblr.PhotoPost)
-		var photos []string
-		for _, photo := range p.Photos {
-			url := photo.OriginalSize.URL
-			res, err := http.Get(url)
-			if err != nil {
-				return errors.Wrap(err, "could not get photo")
-			}
-			defer res.Body.Close()
-			body, err := ioutil.ReadAll(res.Body)
-			if err != nil {
-				return errors.Wrap(err, "could not read photo")
-			}
-			photos = append(photos, fmt.Sprintf(
-				"data:%s;base64,%s",
-				mime.TypeByExtension(path.Ext(url)),
-				base64.StdEncoding.EncodeToString(body),
-			))
+		if err := v.writePhoto(w, p, data); err != nil {
+			return errors.Wrap(err, "could not write photo")
 		}
-		data["photos"] = photos
 	}
 	f, err := w.Create(b.ID.String() + ".html")
 	if err != nil {
@@ -131,15 +114,24 @@ func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json
 	return nil
 }
 
-func (v BackupsResource) encodePhoto(url string) (string, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return "", errors.Wrap(err, "could not get photo")
+func (v BackupsResource) writePhoto(w *zip.Writer, p *gotumblr.PhotoPost, data render.Data) error {
+	var photos []string
+	for _, photo := range p.Photos {
+		url := photo.OriginalSize.URL
+		res, err := http.Get(url)
+		if err != nil {
+			return errors.Wrap(err, "could not get photo")
+		}
+		defer res.Body.Close()
+		f, err := w.Create(path.Join("photos", path.Base(url)))
+		if err != nil {
+			return errors.Wrap(err, "could not create photo in zip")
+		}
+		if _, err := io.Copy(f, res.Body); err != nil {
+			return errors.Wrap(err, "could not write photo")
+		}
+		res.Body.Close()
 	}
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return "", errors.Wrap(err, "could not read photo")
-	}
-	return base64.StdEncoding.EncodeToString(body), nil
+	data["photos"] = photos
+	return nil
 }

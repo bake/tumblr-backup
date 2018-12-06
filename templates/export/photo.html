@@ -1,6 +1,6 @@
 <div class="photo">
-	<%= for (photo) in photos { %>
-		<img src="<%= photo %>">
+	<%= for (photo) in post.Photos { %>
+		<img src="./photos/<%= base(photo.OriginalSize.URL) %>">
 	<% } %>
 </div>
 
