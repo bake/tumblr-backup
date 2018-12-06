@@ -92,6 +92,8 @@ func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json
 	switch b.PostType {
 	case "answer":
 		p = &gotumblr.AnswerPost{}
+	case "chat":
+		p = &gotumblr.ChatPost{}
 	case "photo":
 		p = &gotumblr.PhotoPost{}
 	case "text":
