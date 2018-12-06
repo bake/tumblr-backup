@@ -53,10 +53,12 @@ func (v BackupsResource) Create(c buffalo.Context) error {
 	w := zip.NewWriter(c.Response())
 	defer w.Close()
 
+	includeReblogs := c.Param("include_reblogs") == "true"
 	before := time.Now().Unix()
 	for {
 		res, err := t.Posts(c.Param("blog_id"), "", url.Values{
-			"before": []string{strconv.FormatInt(before, 10)},
+			"before":      []string{strconv.FormatInt(before, 10)},
+			"reblog_info": []string{"true"},
 		})
 		if err != nil {
 			return errors.Wrap(err, "could not get posts")
@@ -67,6 +69,9 @@ func (v BackupsResource) Create(c buffalo.Context) error {
 				return errors.Wrap(err, "could not unmarshal base post")
 			}
 			before = p.Timestamp
+			if p.RebloggedFromID != "" && !includeReblogs {
+				continue
+			}
 			if err := v.writePost(w, &p, raw); err != nil {
 				return errors.Wrap(err, "could not write to zip")
 			}

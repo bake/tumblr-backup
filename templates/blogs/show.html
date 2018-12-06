@@ -3,13 +3,24 @@
 
 	<div>
 		<%= form({action:"/blogs/"+blog.Name+"/backups", method: "POST"}) { %>
-			<p>
+			<p class="field">
+				Include reblogs
+				<label>
+					<input type="radio" class="radio" name="include_reblogs" value="true">
+					<span>Yes</span>
+				</label>
+				<label>
+					<input type="radio" class="radio" name="include_reblogs" value="false" checked>
+					<span>No</span>
+				</label>
+			</p>
+			<p class="field">
 				<button type="submit" class="btn btn-download is-primary">
 					Download all <%= blog.Posts %> posts.
 				</button>
 			</p>
-		<% } %>
 
-		<p>This might take a while.</p>
+			<p>This might take a while.</p>
+		<% } %>
 	</div>
 </section>
