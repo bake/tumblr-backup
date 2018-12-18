@@ -1,11 +1,11 @@
-// @import '~bootstrap/scss/bootstrap.scss';
-// @import '~font-awesome/css/font-awesome.css';
 @import '~nes.css/scss/nes.scss';
+@import '~typeface-press-start-2p/index.css';
 
 body {
 	padding: 0 2rem;
 	margin: 2rem auto;
 	max-width: 768px;
+	font-family: Press Start 2p, monospace;
 }
 
 .container:not(:last-child) {
@@ -19,7 +19,7 @@ body {
 		align-self: flex-end;
 	}
 
-	.balloon {
+	.nes-balloon {
 		margin: 2rem;
 
 		&.from-right {

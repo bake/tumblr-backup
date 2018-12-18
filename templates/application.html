@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Tumblr Backup<i class="icon heart is-medium"></i></h1>
+			<h1>Tumblr Backup<i class="nes-icon heart is-medium"></i></h1>
 			<p>Download all your posts on Tumblr.</p>
 		</header>
 
@@ -18,17 +18,15 @@
 
 		<%= yield %>
 
-		<section class="container">
+		<section class="nes-container">
 			<div>
 				<%= if (!user) { %>
-					Please <a href="/auth/tumblr/login" class="btn is-primary">login</a> with your Tumblr account.
+					Please <a href="/auth/tumblr/login" class="nes-btn is-primary">login</a> with your Tumblr account.
 				<% } else { %>
-					Go to your <a href="/blogs" class="btn">blogs</a>
-					or <a href="/auth/logout" class="btn is-error">logout</a>.
+					Go to your <a href="/blogs" class="nes-btn">blogs</a>
+					or <a href="/auth/logout" class="nes-btn is-error">logout</a>.
 				<% } %>
 			</div>
 		</section>
-
-		<%= javascriptTag("application.js") %>
 	</body>
 </html>
