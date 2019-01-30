@@ -1,1 +1,1 @@
-module git.192k.pw/bake/tumblrbackup
+module git.192k.pw/tumblr/backup

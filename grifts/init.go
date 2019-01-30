@@ -1,7 +1,7 @@
 package grifts
 
 import (
-	"git.192k.pw/bake/tumblrbackup/actions"
+	"git.192k.pw/tumblr/backup/actions"
 	"github.com/gobuffalo/buffalo"
 )
 

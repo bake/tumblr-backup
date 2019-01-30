@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"git.192k.pw/bake/tumblrbackup/actions"
+	"git.192k.pw/tumblr/backup/actions"
 )
 
 // main is the starting point for your Buffalo application.
