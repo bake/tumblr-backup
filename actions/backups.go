@@ -102,6 +102,9 @@ func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json
 	if err := json.Unmarshal(raw, p); err != nil {
 		return errors.Wrapf(err, "could not unmarshal %s post", b.PostType)
 	}
+	if err := v.writeRaw(w, b.ID.String(), raw); err != nil {
+		return errors.Wrap(err, "could not write raw API response")
+	}
 	data := render.Data{"post": p, "response": string(raw)}
 	switch b.PostType {
 	case "photo":
@@ -117,6 +120,17 @@ func (v BackupsResource) writePost(w *zip.Writer, b *gotumblr.BasePost, raw json
 	renderer := r.Plain("export/"+b.PostType+".html", "export.html")
 	if err := renderer.Render(f, data); err != nil {
 		return errors.Wrapf(err, "could not render html for %v", b.ID)
+	}
+	return nil
+}
+
+func (v BackupsResource) writeRaw(w *zip.Writer, id string, raw json.RawMessage) error {
+	f, err := w.Create(path.Join("raw", id+".json"))
+	if err != nil {
+		return errors.Wrap(err, "could not create raw API response in zip")
+	}
+	if _, err := f.Write(raw); err != nil {
+		return errors.Wrap(err, "could not write raw API response to zip")
 	}
 	return nil
 }
