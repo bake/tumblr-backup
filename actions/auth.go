@@ -64,10 +64,13 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			c.Session().Clear()
 			return next(c)
 		}
-		cache := diskcache.New(path.Join("cache", userName), time.Hour)
+		trans := httpcache.New(
+			diskcache.New(path.Join("cache", userName), time.Hour),
+			httpcache.WithVerifier(httpcache.StatusInTwoHundreds),
+		)
 		t := gotumblr.New(
 			os.Getenv("TUMBLR_KEY"), os.Getenv("TUMBLR_SECRET"), token, secret,
-			gotumblr.SetClient(httpcache.New(cache).Client()),
+			gotumblr.SetClient(trans.Client()),
 		)
 		c.Set("tumblr", t)
 
