@@ -1,26 +1,26 @@
-<section class="nes-container with-title">
+<section class="nes-container is-rounded with-title">
 	<h2 class="title"><%= blog.Title %></h2>
 
 	<div>
 		<%= form({action:"/blogs/"+blog.Name+"/backups", method: "POST"}) { %>
-			<p class="field">
-				Include reblogs?
-				<label>
-					<input type="radio" class="nes-radio" name="include_reblogs" value="true">
-					<span>Yes</span>
-				</label>
-				<label>
-					<input type="radio" class="nes-radio" name="include_reblogs" value="false" checked>
-					<span>No</span>
-				</label>
-			</p>
-			<p class="field">
-				<button type="submit" class="nes-btn btn-download is-primary">
-					Download all <%= blog.Posts %> posts.
-				</button>
-			</p>
+		<p class="field">
+			Include reblogs?
+			<label>
+				<input type="radio" class="nes-radio" name="include_reblogs" value="true">
+				<span>Yes</span>
+			</label>
+			<label>
+				<input type="radio" class="nes-radio" name="include_reblogs" value="false" checked>
+				<span>No</span>
+			</label>
+		</p>
+		<p class="field">
+			<button type="submit" class="nes-btn btn-download is-primary">
+				Download all <%= blog.Posts %> posts.
+			</button>
+		</p>
 
-			<p>This might take a while.</p>
+		<p>This might take a while.</p>
 		<% } %>
 	</div>
 </section>

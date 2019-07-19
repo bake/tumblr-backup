@@ -8,8 +8,8 @@ body {
 	font-family: Press Start 2p, monospace;
 }
 
-.container:not(:last-child) {
-	margin-bottom: 1rem;
+.nes-container {
+	margin-bottom: 24px !important;
 }
 
 .message {
