@@ -138,10 +138,7 @@ func (v BackupsResource) writeRaw(w *zip.Writer, id string, raw json.RawMessage)
 func (v BackupsResource) writePhoto(w *zip.Writer, p *gotumblr.PhotoPost, data render.Data) error {
 	var photos []string
 	for _, photo := range p.Photos {
-		if len(photo.AltSizes) == 0 {
-			return errors.Errorf("could not find photo")
-		}
-		url := photo.AltSizes[0].URL
+		url := photo.OriginalSize.URL
 		res, err := http.Get(url)
 		if err != nil {
 			return errors.Wrap(err, "could not get photo")
@@ -154,7 +151,6 @@ func (v BackupsResource) writePhoto(w *zip.Writer, p *gotumblr.PhotoPost, data r
 		if _, err := io.Copy(f, res.Body); err != nil {
 			return errors.Wrap(err, "could not write photo")
 		}
-		res.Body.Close()
 	}
 	data["photos"] = photos
 	return nil

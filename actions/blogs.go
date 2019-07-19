@@ -3,7 +3,7 @@ package actions
 import (
 	"net/http"
 
-	"github.com/BakeRolls/gotumblr"
+	"github.com/bake/gotumblr"
 	"github.com/gobuffalo/buffalo"
 	"github.com/pkg/errors"
 )

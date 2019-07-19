@@ -7,9 +7,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/BakeRolls/gotumblr"
-	"github.com/BakeRolls/httpcache"
-	"github.com/BakeRolls/httpcache/diskcache"
+	"github.com/bake/gotumblr"
+	"github.com/bake/httpcache"
+	"github.com/bake/httpcache/diskcache"
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
