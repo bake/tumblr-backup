@@ -1,0 +1,13 @@
+name = "backup"
+bin = "bin/backup"
+vcs = "git"
+with_pop = false
+with_sqlite = false
+with_dep = false
+with_webpack = true
+with_nodejs = true
+with_yarn = true
+with_docker = false
+with_grifts = true
+as_web = true
+as_api = false
