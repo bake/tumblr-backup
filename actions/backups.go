@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/BakeRolls/gotumblr"
+	"github.com/bake/gotumblr"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/pkg/errors"
@@ -138,7 +138,10 @@ func (v BackupsResource) writeRaw(w *zip.Writer, id string, raw json.RawMessage)
 func (v BackupsResource) writePhoto(w *zip.Writer, p *gotumblr.PhotoPost, data render.Data) error {
 	var photos []string
 	for _, photo := range p.Photos {
-		url := photo.OriginalSize.URL
+		if len(photo.AltSizes) == 0 {
+			return errors.Errorf("could not find photo")
+		}
+		url := photo.AltSizes[0].URL
 		res, err := http.Get(url)
 		if err != nil {
 			return errors.Wrap(err, "could not get photo")
