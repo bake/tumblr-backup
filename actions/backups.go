@@ -144,7 +144,7 @@ func (v BackupsResource) writePhoto(w *zip.Writer, p *gotumblr.PhotoPost, data r
 			return errors.Wrap(err, "could not get photo")
 		}
 		defer res.Body.Close()
-		f, err := w.Create(path.Join("photos", path.Base(url)))
+		f, err := w.Create(path.Join("photos", p.ID.String()+"-"+path.Base(url)))
 		if err != nil {
 			return errors.Wrap(err, "could not create photo in zip")
 		}
