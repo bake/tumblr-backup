@@ -1,21 +1,13 @@
-# Welcome to Buffalo!
+# tumblr-backup
 
-Thank you for choosing Buffalo for your web development needs.
+Tumblr Backup is a simple webservice to download a blog. Supported post types
+are _text_, _ask_ and _photo_. Posts and their contents are downloaded from
+Tumblr and streamed directly into the ZIP the client is downloading.
 
-## Starting the Application
+## Development
 
-Buffalo ships with a command that will watch your application and automatically rebuild the Go binary and any assets for you. To do that run the "buffalo dev" command:
+[Register a Tumblr application](https://www.tumblr.com/oauth/apps) and enter its
+OAuth key and secret in `.env`.
 
-	$ buffalo dev
-
-If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you should see a "Welcome to Buffalo!" page.
-
-**Congratulations!** You now have your Buffalo application up and running.
-
-## What Next?
-
-We recommend you heading over to [http://gobuffalo.io](http://gobuffalo.io) and reviewing all of the great documentation there.
-
-Good luck!
-
-[Powered by Buffalo](http://gobuffalo.io)
+This project uses [Buffalo](http://gobuffalo.io) so simply use `$ buffalo dev`
+to run the development server. Use `$ buffalo build` to build.
