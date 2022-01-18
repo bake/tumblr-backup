@@ -23,7 +23,7 @@ func init() {
 	goth.UseProviders(tumblr.New(
 		os.Getenv("TUMBLR_KEY"),
 		os.Getenv("TUMBLR_SECRET"),
-		fmt.Sprintf("%s%s", App().Host, "/auth/tumblr/callback"),
+		fmt.Sprintf("%s%s", app.Options.Host, "/auth/tumblr/callback"),
 	))
 }
 

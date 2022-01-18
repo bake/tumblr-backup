@@ -1,6 +1,9 @@
 package actions
 
 import (
+	"net/http"
+
+	"git.192k.pw/tumblr/backup/public"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	csrf "github.com/gobuffalo/mw-csrf"
@@ -48,7 +51,7 @@ func App() *buffalo.App {
 		auth.GET("/{provider}/callback", AuthHandler)
 		app.Resource("/blogs", BlogsResource{})
 		app.Resource("/blogs/{blog_id}/backups", BackupsResource{})
-		app.ServeFiles("/", assetsBox)
+		app.ServeFiles("/", http.FS(public.FS()))
 	}
 
 	return app
