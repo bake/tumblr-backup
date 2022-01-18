@@ -11,3 +11,23 @@ OAuth key and secret in `.env`.
 
 This project uses [Buffalo](http://gobuffalo.io) so simply use `$ buffalo dev`
 to run the development server. Use `$ buffalo build` to build.
+
+## Screenshots
+
+### Login
+
+![Login](screenshots/tumblr-backup-1.png)
+
+### Blog overview
+
+![Blog overview](screenshots/tumblr-backup-2.png)
+
+### Single blog
+
+![Single blog](screenshots/tumblr-backup-3.png)
+
+## Dependencies
+
+- [gobuffalo/buffalo](https://github.com/gobuffalo/buffalo)
+- [nostalgic-css/NES.css](https://github.com/nostalgic-css/NES.css/)
+- [bake/gotumblr](https://github.com/bake/gotumblr)
